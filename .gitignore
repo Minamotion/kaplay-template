@@ -1,9 +1,1 @@
-# Ignore VSCode's files.
-.vscode/
-
-# Ignore development files.
-.krita/
-.lmms/
-
-# Ignore all readme.txt files.
-*/readme.txt
+# Temporal

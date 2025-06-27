@@ -1,5 +1,5 @@
 {
 	"background": [0,0,0],
-	"viewport": [1152,648],
-	"antialiasing": true
+	"viewport": [256,144],
+	"antialiasing": false
 }

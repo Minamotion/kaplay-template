@@ -1,40 +1,48 @@
+<!--
+	This HTML shell was manually coded by @Minamotion on his laptop
+
+	No need to change anything here, unless:
+	1. You made some changes to main.js that require a change in the HTML code (for some reason)
+	2. You don't want/have to press a button to start the game when releasing
+-->
 <html style="width: 100vw; height: 100vh;">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.5, minimum-scale=0.5">
-        <meta charset="UTF-8">
-        <script src="https://unpkg.com/kaplay@3001/dist/kaplay.js"></script>
-        <script type="module" src="main.js"></script>
-        <style>
-            body {
-                margin: 0;
-            }
-            #begin {
-                font-size: 1em;
-                border: none;
-                color: #ffffff;
-                background: #000000;
-                width: 100vw;
-                height: 100vh;
-            }
-            #begin:hover {
-                color: #ffff00;
-                background: #111111;
-                cursor: pointer;
-            }
-            #begin:hover:active {
-                color: #00ff00;
-            }
-        </style>
-    </head>
-    <body>
-        <button id="begin">Click anywhere in this area to enable sound and play the game</button>
-        <noscript>
-            <style>
-                #begin {
-                    display: none;
-                }
-            </style>
-            <p>You need Javascript enabled to play this game, buddy!</p>
-        </noscript>
-    </body>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.5, minimum-scale=0.5">
+		<meta charset="UTF-8">
+		<script src="https://unpkg.com/kaplay@3001/dist/kaplay.js"></script>
+		<script type="module" src="main.js"></script>
+		<style>
+			body {
+				margin: 0;
+			}
+			#begin {
+				font-size: 1em;
+				border: none;
+				color: #ffffff;
+				background: #000000;
+				width: 100vw;
+				height: 100vh;
+			}
+			#begin:hover {
+				color: #ffff00;
+				background: #111111;
+				cursor: pointer;
+			}
+			#begin:hover:active {
+				color: #00ff00;
+			}
+		</style>
+	</head>
+	<body>
+		<button id="begin">Click here to play!</button>
+		<noscript>
+			<style>
+				#begin {
+					display: none;
+				}
+			</style>
+			<h1>Not this time you don't!</h1>
+			<p>Your browser prohibits the use of Javascript in this website, please whitelist this website to be able to play this game.</p>
+		</noscript>
+	</body>
 </html>

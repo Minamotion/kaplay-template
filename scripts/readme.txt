@@ -1,1 +1,2 @@
-Put javascript files here, they can be kaplay plugins or functions. All scripts need to be imported by game.js or else they're unused
+Put javascript files here, they can be kaplay plugins or functions. All scripts need to be imported by game.js
+

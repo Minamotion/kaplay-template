@@ -1,3 +1,10 @@
+// This Javascript File was manually coded by @Minamotion on his laptop
+//
+// No need to change anything here, unless:
+// 1. Your game has some kind of special asset type you want to load
+// 2. You want to code your own loading screen
+// 3. You don't want/have to press a button to start the game when releasing
+
 import { game } from "/scripts/game.js";
 
 const beginBtn = document.getElementById("begin")
@@ -7,9 +14,9 @@ beginBtn.addEventListener("click", async () => {
 	beginBtn.disabled = true
 	const kSettings = await fetch("/kaplay.json").then(raw=>raw.json())
 	/**
-	 * @type {import("./.vscode/env.d.ts").KAPLAYCtx}
+	 * @type {import("./.vscode/k.env").KAPLAYCtx}
 	 */
-	const k = kaplay({
+	let k = kaplay({
 		global: false,
 		background: kSettings.background,
 		width: kSettings.viewport[0], 
@@ -18,6 +25,8 @@ beginBtn.addEventListener("click", async () => {
 		letterbox: true,
 		loadingScreen: true
 	})
+	//#endregion
+	//#region [Custom loading screen, removing it does nothing bad]
 	k.onLoading((progress) => {
 		k.drawRect({
 			width: k.width(),
@@ -40,52 +49,80 @@ beginBtn.addEventListener("click", async () => {
 		});
 	});
 	//#endregion
-	//#region [Load assets]
+	//#region [Load assets from assets.json, then start game]
 	fetch("/assets.json").then(raw=>raw.json()).then(async (assetlist)=>{
 		console.info("Started loading assets from asset list: ", assetlist)
 		let oopsies = 0
 		for (let index = 0; index < assetlist.length; index++) {
 			const data = assetlist[index]
-			if (typeof data === "object") {
+			if (typeof data === "object" && !Array.isArray(data)) {
+				let rdata = {
+					error: false,
+					message: "",
+					errorOut(message) {
+						this.error = true
+						this.message = message
+						oopsies++
+					}
+				}
 				switch (data.type) {
-					case "json":
+					case "data":
 						await k.loadJSON(data.name, data.src)
 						break;
 					case "sprite":
-						await k.loadSprite(data.name, data.src, (typeof data.options === "object")?data.options:{})
+						await k.loadSprite(data.name, data.src, (typeof data.options === "object")?data.options:{}).onError((error) => {
+							rdata.errorOut(error)
+						})
 						break;
 					case "bitfont":
-						await k.loadBitmapFont(data.name, data.src, data.gridSize[0], data.gridSize[1], (typeof data.options === "object")?data.options:{})
+						await k.loadBitmapFont(data.name, data.src, data.gridSize[0], data.gridSize[1], (typeof data.options === "object")?data.options:{}).onError((error) => {
+							rdata.errorOut(error)
+						})
 						break;
 					case "spriteatlas":
-						await k.loadSpriteAtlas(data.src, data.sprites)
+						await k.loadSpriteAtlas(data.src, data.sprites).onError((error) => {
+							rdata.errorOut(error)
+						})
 						break;
 					case "font":
-						await k.loadFont(data.name, data.src)
+						await k.loadFont(data.name, data.src).onError((error) => {
+							rdata.errorOut(error)
+						})
 						break;
 					case "audio":
-						await k.loadSound(data.name, data.src)
+						await k.loadSound(data.name, data.src).onError((error) => {
+							rdata.errorOut(error)
+						})
 						break;
 					case "shader":
-						await k.loadShaderURL(data.name, data.vertsrc, data.fragsrc)
+						await k.loadShaderURL(data.name, data.vertsrc, data.fragsrc).onError((error) => {
+							rdata.errorOut(error)
+						})
 						break;
 					case "bean":
 						await k.loadBean(data.name)
 						break;
+					case "plug":
+						k = k.plug(data.src);
+						break;
 					default:
-						console.error(`Error loading asset "${data.name}": ${data.type} is not yet handled by the script\n`,data)
-						oopsies++
+						rdata.errorOut(`${data.type} is not a known type of asset`)
 						break;
 				}
+				if (rdata.error) {
+					console.error(`Error loading ${data.type} asset "${data.name}"\n`, rdata.message ,"\nData: ", data)
+				} else {
+					console.info(`Successfully ${data.type} loaded asset ${data.name}`)
+				}
 			} else {
-				console.error(`Error loading asset #"${index}": No valid JSON was returned`, data)
+				console.error(`Error loading asset #"${index}": Invalid object was returned`, data)
 				oopsies++
 			}
 		}
 		if (oopsies > 0) {
-			console.warn(`Finished loading assets, but ${oopsies} errors emerged`)
+			console.warn(`Finished loading assets with ${oopsies} errors`)
 		} else {
-			console.info("Finished loading assets")
+			console.info("Finished loading assets with no errors")
 		}
 	}).finally(() => game(k))
 	//#endregion
