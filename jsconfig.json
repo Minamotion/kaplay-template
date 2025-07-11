@@ -1,7 +1,0 @@
-{
-    "compilerOptions": {
-        "types": [
-            "./.vscode/k.env.d.ts"
-        ]
-    }
-}
