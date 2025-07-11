@@ -1,2 +1,5 @@
 ## SHADERS
-Put vertex/fragment shaders here
+Place vertex/fragment shaders here
+These can be:
+- VERT files
+- FRAG files

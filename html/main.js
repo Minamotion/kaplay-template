@@ -19,7 +19,7 @@ $("#begin").on("click", async function () {
 		global: false,
 		background: kSettings.background,
 		width: kSettings.viewport[0], 
-		eight: kSettings.viewport[1],
+		height: kSettings.viewport[1],
 		crisp: !kSettings.antialiasing,
 		letterbox: true,
 		loadingScreen: true
@@ -36,7 +36,7 @@ $("#begin").on("click", async function () {
 			 * @returns {Asset<any>|null} Asset or null if it doesn't exist
 			 */
 			getSpecialAsset(name) {
-				kSpecialAssetRequested = null
+				let kSpecialAssetRequested = null
 				kSpecialAssets.forEach((assetData)=>{
 					if (assetData.name == name) {
 						kSpecialAssetRequested = assetData.asset

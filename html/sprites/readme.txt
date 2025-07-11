@@ -1,1 +1,0 @@
-Put sprites here. These can be spritesheets, aseprite (sprite + json array), and single sprites (For example: title.png)

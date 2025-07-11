@@ -1,1 +1,1 @@
-KaplayJS Template v2.1.1 Demo
+Version 12 (Demo)

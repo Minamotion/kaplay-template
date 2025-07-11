@@ -1,5 +1,10 @@
 [
 	{
 		"type": "bean"
+	},
+	{
+		"type": "text",
+		"name": "demo-text",
+		"src": "./data/demo-text.txt"
 	}
 ]
