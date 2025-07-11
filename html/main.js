@@ -7,11 +7,10 @@
 
 import { game } from "/scripts/game.js";
 
-const beginBtn = document.getElementById("begin")
-beginBtn.addEventListener("click", async () => {
+$("#begin").on("click", async function () {
 	//#region [Setup kaplay context]
-	beginBtn.hidden = true
-	beginBtn.disabled = true
+	this.hidden = true
+	this.disabled = true
 	const kSettings = await fetch("/kaplay.json").then(raw=>raw.json())
 	/**
 	 * @type {import("../.vscode/k.env").KAPLAYCtx}
