@@ -14,9 +14,9 @@ beginBtn.addEventListener("click", async () => {
 	beginBtn.disabled = true
 	const kSettings = await fetch("/kaplay.json").then(raw=>raw.json())
 	/**
-	 * @type {import("./.vscode/k.env").KAPLAYCtx}
+	 * @type {import("../.vscode/k.env").KAPLAYCtx}
 	 */
-	let k = kaplay({
+	const k = kaplay({
 		global: false,
 		background: kSettings.background,
 		width: kSettings.viewport[0], 
@@ -24,6 +24,29 @@ beginBtn.addEventListener("click", async () => {
 		crisp: !kSettings.antialiasing,
 		letterbox: true,
 		loadingScreen: true
+	})
+	/**
+	 * @type {{name:string,asset:import("../.vscode/k.env").Asset<any>}[]}
+	 */
+	let kSpecialAssets = []
+	k.plug(function (k) {
+		return {
+			/**
+			 * Returns a special asset loaded by `main.js`
+			 * @param {string} name Asset name
+			 * @returns {Asset<any>|null} Asset or null if it doesn't exist
+			 */
+			getSpecialAsset(name) {
+				kSpecialAssetRequested = null
+				kSpecialAssets.forEach((assetData)=>{
+					if (assetData.name == name) {
+						kSpecialAssetRequested = assetData.asset
+						return;
+					}
+				})
+				return kSpecialAssetRequested
+			}
+		}
 	})
 	//#endregion
 	//#region [Custom loading screen, removing it does nothing bad]
@@ -74,6 +97,11 @@ beginBtn.addEventListener("click", async () => {
 							rdata.errorOut(error)
 						})
 						break;
+					case "aseprite":
+						await k.loadAseprite(data.name, data.src.image, data.src.spritesheet).onError((error) => {
+							rdata.errorOut(error)
+						})
+						break;
 					case "bitfont":
 						await k.loadBitmapFont(data.name, data.src, data.gridSize[0], data.gridSize[1], (typeof data.options === "object")?data.options:{}).onError((error) => {
 							rdata.errorOut(error)
@@ -103,8 +131,16 @@ beginBtn.addEventListener("click", async () => {
 						await k.loadBean(data.name)
 						break;
 					case "plug":
-						k = k.plug(data.src);
+						k.plug(data.src);
 						break;
+					case "text":
+						const nasset = await k.load(new Promise(async (resolve, reject) => {
+							let proceed = true;
+							const text = await fetch(data.src).then(raw => raw.text()).catch((error)=>{reject(error); proceed = false})
+							if (proceed) resolve(text)
+						}))
+						kSpecialAssets.push({name:data.name,asset:nasset})
+					break;
 					default:
 						rdata.errorOut(`${data.type} is not a known type of asset`)
 						break;
