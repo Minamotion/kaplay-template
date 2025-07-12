@@ -1,0 +1,22 @@
+body {
+	margin: 0;
+}
+
+#begin {
+	font-size: 1em;
+	border: none;
+	color: #ffffff;
+	background: #000000;
+	width: 100vw;
+	height: 100vh;
+}
+
+#begin:hover {
+	color: #ffff00;
+	background: #111111;
+	cursor: pointer;
+}
+
+#begin:hover:active {
+	color: #00ff00;
+}

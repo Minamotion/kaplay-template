@@ -7,13 +7,12 @@
 
 import { game } from "/scripts/game.js";
 
-$("#begin").on("click", async function () {
+async function loadGame() {
 	//#region [Setup kaplay context]
-	this.hidden = true
-	this.disabled = true
+	$("#canvas").removeAttr("hidden")
 	const kSettings = await fetch("/kaplay.json").then(raw=>raw.json())
 	/**
-	 * @type {import("../.vscode/k.env").KAPLAYCtx}
+	 * @type {import("../k.env").KAPLAYCtx}
 	 */
 	const k = kaplay({
 		global: false,
@@ -22,7 +21,8 @@ $("#begin").on("click", async function () {
 		height: kSettings.viewport[1],
 		crisp: !kSettings.antialiasing,
 		letterbox: true,
-		loadingScreen: true
+		loadingScreen: true,
+		canvas: $("#canvas").get(0)
 	})
 	/**
 	 * @type {{name:string,asset:import("../.vscode/k.env").Asset<any>}[]}
@@ -139,7 +139,7 @@ $("#begin").on("click", async function () {
 							if (proceed) resolve(text)
 						}))
 						kSpecialAssets.push({name:data.name,asset:nasset})
-					break;
+						break;
 					default:
 						rdata.errorOut(`${data.type} is not a known type of asset`)
 						break;
@@ -147,10 +147,10 @@ $("#begin").on("click", async function () {
 				if (rdata.error) {
 					console.error(`Error loading ${data.type} asset "${data.name}"\n`, rdata.message ,"\nData: ", data)
 				} else {
-					console.info(`Successfully ${data.type} loaded asset ${data.name}`)
+					console.info(`Successfully loaded ${data.type} asset "${data.name}"!`)
 				}
 			} else {
-				console.error(`Error loading asset #"${index}": Invalid object was returned`, data)
+				console.error("Error loading null asset null\nInvalid object was returned\nData: ",data)
 				oopsies++
 			}
 		}
@@ -161,4 +161,14 @@ $("#begin").on("click", async function () {
 		}
 	}).finally(() => game(k))
 	//#endregion
+}
+
+$("#begin").on("click", function() {
+	this.hidden = true
+	this.disabled = true
+	loadGame()
+})
+
+$(document).ready(function() {
+	$("#begin").removeAttr("hidden")
 })
