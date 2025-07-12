@@ -97,7 +97,7 @@ $("#begin").on("click", async function () {
 						})
 						break;
 					case "aseprite":
-						await k.loadAseprite(data.name, data.src.image, data.src.spritesheet).onError((error) => {
+						await k.loadAseprite(data.name, data.src.image, data.src.array).onError((error) => {
 							rdata.errorOut(error)
 						})
 						break;
