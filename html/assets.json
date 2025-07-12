@@ -3,8 +3,8 @@
 		"type": "bean"
 	},
 	{
-		"type": "text",
 		"name": "demo-text",
+		"type": "text",
 		"src": "./data/demo-text.txt"
 	}
 ]

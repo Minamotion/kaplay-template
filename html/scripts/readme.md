@@ -1,4 +1,5 @@
 ## SCRIPTS
+Place scripts here.
 These can be:
 - Kaplay Plugins
 - Exported Functions.

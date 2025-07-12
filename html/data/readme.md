@@ -1,4 +1,5 @@
 ## DATA
+Place data here
 These can be:
 - JSON files
 - XML files _(needs implementation in `main.js`)_
