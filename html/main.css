@@ -1,8 +1,15 @@
+/*
+	This CSS Stylesheet was manually coded by @Minamotion on his laptop
+
+	No need to change anything here, unless:
+	1. You no longer have a button to press, in which case it makes sense to remove style for "button#begin"
+*/
 body {
 	margin: 0;
+	overflow: hidden;
 }
 
-#begin {
+button#begin {
 	font-size: 1em;
 	border: none;
 	color: #ffffff;
@@ -11,12 +18,12 @@ body {
 	height: 100vh;
 }
 
-#begin:hover {
+button#begin:hover {
 	color: #ffff00;
 	background: #111111;
 	cursor: pointer;
 }
 
-#begin:hover:active {
+button#begin:hover:active {
 	color: #00ff00;
 }

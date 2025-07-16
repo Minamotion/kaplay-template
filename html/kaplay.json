@@ -1,5 +1,29 @@
 {
 	"background": [0,0,0],
 	"viewport": [1280,720],
-	"antialiasing": true
+	"antialiasing": true,
+	"controls": {
+		"up": {
+			"keyboard": ["up","w"]
+		},
+		"left": {
+			"keyboard": ["left","a"]
+		},
+		"down": {
+			"keyboard": ["down","s"]
+		},
+		"right": {
+			"keyboard": ["right","d"]
+		}
+	},
+	"assets": [
+		{
+			"type": "bean"
+		},
+		{
+			"name": "demo-text",
+			"type": "text",
+			"src": "./data/demo-text.txt"
+		}
+	]
 }
