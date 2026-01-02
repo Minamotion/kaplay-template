@@ -3,25 +3,26 @@
 
 	No need to change anything here, unless:
 	1. You made some changes to main.js that require a change in the HTML code (for some reason)
-	2. You don't want/have to press a button to start the game when releasing
+	2. You want to release your game on itch.io
 -->
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.5, minimum-scale=0.5"/>
 		<meta charset="UTF-8"/>
-		<link rel="stylesheet" href="./main.css"/>
+		<link rel="stylesheet" href="main.css"/>
 		<title>Game embed</title>
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 		<script src="https://unpkg.com/kaplay@3001/dist/kaplay.js"></script>
 		<script type="module" src="main.js"></script>
 	</head>
 	<body>
-		<button id="begin" hidden>Click here to play!</button>
+		<button id="begin" hidden>Play game</button>
 		<canvas id="canvas" hidden></canvas>
 		<noscript>
-			<h1>Not this time you don't!</h1>
+			<h1>Nothing works.</h1>
 			<p>Your browser prohibits the use of Javascript in this website, please whitelist this website to be able to play this game.</p>
+			<p>Signed, Minamotion</p>
 		</noscript>
 	</body>
 </html>

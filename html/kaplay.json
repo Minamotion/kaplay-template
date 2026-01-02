@@ -1,7 +1,12 @@
 {
-	"background": [0,0,0],
-	"viewport": [1280,720],
-	"antialiasing": true,
+	"viewport": {
+		"width": 1280,
+		"height": 720,
+		"scale": 1,
+		"background": [0,0,0],
+		"pixelated": false,
+		"font": "monospace"
+	},
 	"controls": {
 		"up": {
 			"keyboard": ["up","w"]

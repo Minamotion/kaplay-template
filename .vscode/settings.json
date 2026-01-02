@@ -1,3 +1,7 @@
 {
-	"liveServer.settings.root": "./html/"
+	"liveServer.settings.root": "./html/",
+	"editor.tabSize": 8,
+	"editor.autoIndentOnPaste": true,
+	"editor.insertSpaces": false,
+	"editor.trimWhitespaceOnDelete": true
 }
