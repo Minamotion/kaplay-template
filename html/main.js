@@ -5,12 +5,13 @@
 // 2. You want to release your game on itch.io
 
 /** @import { Asset, KAPLAYCtx } from "../k.env" */
-import { game } from "/scripts/game.js";
+import game from "/scripts/game.js";
 
 async function loadGame() {
 	//#region [Setup kaplay context]
 	$("#canvas").removeAttr("hidden")
 	const kSettings = await fetch("/kaplay.json").then(raw => raw.json())
+	const urlSearch = new URLSearchParams(location)
 	/** @type {KAPLAYCtx} */
 	const k = kaplay({
 		global: false,
@@ -32,10 +33,10 @@ async function loadGame() {
 			/**
 			 * Returns a special asset loaded by `main.js`
 			 * @param {string} name Asset name
-			 * @returns {Asset<any>|null} Asset or null if it doesn't exist
+			 * @returns {Asset<any>?} Asset (or null if it doesn't exist)
 			 */
 			getSpecialAsset(name) {
-				let kSpecialAssetRequested = null
+				let kSpecialAssetRequested;
 				kSpecialAssets.forEach((assetData) => {
 					if (assetData.name == name) {
 						kSpecialAssetRequested = assetData.asset
@@ -106,8 +107,8 @@ async function loadGame() {
 		}
 	})
 	k.onLoad(() => {
-		console.info(`Finished loading assets with ${oopsies>0?oopsies:"no"} errors.`)
-		game(k)
+		console.info(`Finished loading assets with ${oopsies > 0 ? oopsies : "no"} errors.`)
+		game(k,urlSearch)
 	})
 	//#endregion
 }

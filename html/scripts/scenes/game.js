@@ -3,7 +3,7 @@
 /**
  * @param {KAPLAYCtx} k KAPLAY Context
  */
-export const gameScene = (k) => {
+export default (k) => {
     k.scene("game", () => {
 		const player = k.add([
 			k.sprite("bean"),

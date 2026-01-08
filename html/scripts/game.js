@@ -1,12 +1,12 @@
 /** @import { KAPLAYCtx } from "../../k.env" */
-import { gameScene } from "./scenes/game"
-
+import game from "./scenes/game"
 
 /**
  * The game's source code
  * @param {KAPLAYCtx} k KAPLAY Context
+ * @param {URLSearchParams} p Parameters
  */
-export const game = (k) => {
+export default (k, p) => {
 	k.setLayers(["background","objects","hud"],"objects")
 	k.add([
 		k.text(k.getSpecialAsset("demo-text"), { width: k.width(), align: "center" }),
@@ -17,7 +17,7 @@ export const game = (k) => {
 		k.layer("hud")
 	])
 
-	gameScene()
+	game()
 
 	k.go("game")
 }
