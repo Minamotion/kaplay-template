@@ -11,7 +11,7 @@ async function loadGame() {
 	//#region [Setup kaplay context]
 	$("#canvas").removeAttr("hidden")
 	const kSettings = await fetch("/kaplay.json").then(raw => raw.json())
-	const urlSearch = new URLSearchParams(location)
+	const urlSearch = new URLSearchParams(location.search)
 	/** @type {KAPLAYCtx} */
 	const k = kaplay({
 		global: false,
