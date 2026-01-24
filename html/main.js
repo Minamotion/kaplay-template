@@ -108,7 +108,7 @@ async function loadGame() {
 	})
 	k.onLoad(() => {
 		console.info(`Finished loading assets with ${oopsies > 0 ? oopsies : "no"} errors.`)
-		game(k,urlSearch)
+		game(k, urlSearch)
 	})
 	//#endregion
 }

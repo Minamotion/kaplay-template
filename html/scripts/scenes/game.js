@@ -2,9 +2,10 @@
 
 /**
  * @param {KAPLAYCtx} k KAPLAY Context
+ * @param {URLSearchParams} p Parameters
  */
 export default (k) => {
-    k.scene("game", () => {
+	k.scene("game", () => {
 		const player = k.add([
 			k.sprite("bean"),
 			k.pos(k.center()),
