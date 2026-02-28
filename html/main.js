@@ -4,16 +4,17 @@
 // 1. Your game has some kind of special asset type you want to load
 // 2. You want to release your game on itch.io
 
-/** @import { Asset, KAPLAYCtx } from "../k.env" */
-import game from "/scripts/game.js";
+/** @import { Asset, KAPLAYCtx, KAPLAYOpt } from "../../k.env" */
+import game from "./scripts/game.js";
 
 async function loadGame() {
 	//#region [Setup kaplay context]
 	$("#canvas").removeAttr("hidden")
-	const kSettings = await fetch("/kaplay.json").then(raw => raw.json())
+	const kSettings = await fetch("./kaplay.json").then(raw => raw.json())
 	const urlSearch = new URLSearchParams(location.search)
-	/** @type {KAPLAYCtx} */
-	const k = kaplay({
+
+	/** @type {KAPLAYOpt} */
+	const kOpt = {
 		global: false,
 		background: kSettings.viewport.background,
 		width: kSettings.viewport.width,
@@ -24,10 +25,17 @@ async function loadGame() {
 		canvas: $("#canvas").get(0),
 		buttons: kSettings.controls,
 		font: kSettings.viewport.font,
-		scale: kSettings.viewport.scale
-	})
+		scale: kSettings.viewport.scale,
+		pixelDensity: Math.min(devicePixelRatio, kSettings.viewport.scale),
+		texFilter: kSettings.viewport.pixelated ? "nearest" : "linear"
+	}
+
+	/** @type {KAPLAYCtx} */
+	const k = kaplay(kOpt)
+
 	/** @type {{name:string,asset:Asset<any>}[]} */
 	let kSpecialAssets = []
+	k.loadRoot("./")
 	k.plug(function (k) {
 		return {
 			/**
@@ -36,14 +44,11 @@ async function loadGame() {
 			 * @returns {Asset<any>?} Asset (or null if it doesn't exist)
 			 */
 			getSpecialAsset(name) {
-				let kSpecialAssetRequested;
-				kSpecialAssets.forEach((assetData) => {
-					if (assetData.name == name) {
-						kSpecialAssetRequested = assetData.asset
-						return;
+				for (const kSpecialAsset of kSpecialAssets) {
+					if (kSpecialAsset.name == name) {
+						return kSpecialAsset.asset
 					}
-				})
-				return kSpecialAssetRequested
+				}
 			}
 		}
 	})
@@ -84,19 +89,43 @@ async function loadGame() {
 				case "font":
 					k.loadFont(asset.name, asset.src).onError(error => oops(error)).onLoad(() => yay())
 					break;
-				case "audio":
+				case "sound":
 					k.loadSound(asset.name, asset.src).onError(error => oops(error)).onLoad(() => yay())
+					break;
+				case "music":
+					k.loadMusic(asset.name, asset.src) // This will be streamed
 					break;
 				case "shader":
 					k.loadShaderURL(asset.name, asset.vertsrc, asset.fragsrc).onError(error => oops(error)).onLoad(() => yay())
 					break;
 				case "bean":
-					k.loadBean(asset.name)
+					k.loadBean(asset.name ?? "bean")
 					break;
 				case "text":
-					k.load(new Promise(async (resolve, reject) => {
+					const text = k.load(new Promise(async (resolve, reject) => {
 						fetch(asset.src).then(raw => resolve(raw.text())).catch(error => reject(error))
-					})).then(data => kSpecialAssets.push({ name: asset.name, asset: data })).onError(error => oops(error)).onLoad(() => yay())
+					})).onError(error => oops(error)).onLoad(() => yay())
+					kSpecialAssets.push({ name: asset.name, asset: text })
+					break;
+				case "csv":
+					const csv = k.load(new Promise(async (resolve, reject) => {
+						fetch(asset.src).then(raw => resolve(raw.text().then(t => t.split("\n").map(row => {
+								const output = []
+								for (const column of row.split((asset.opt ?? {separator: ","}).separator)) {
+									output.push(Number.isNaN(+column) ? column : +column)
+								}
+								return output
+							})
+						))).catch(error => reject(error))
+					})).onError(error => oops(error)).onLoad(() => yay())
+					kSpecialAssets.push({ name: asset.name, asset: csv })
+					break;
+				case "xml":
+					const xml = k.load(new Promise(async (resolve, reject) => {
+						const parser = new DOMParser()
+						fetch(asset.src).then(raw => resolve(raw.text().then(t => parser.parseFromString(t, "application/xml")))).catch(error => reject(error))
+					}))
+					kSpecialAssets.push({ name: asset.name, asset: xml })
 					break;
 				default:
 					oops(`${asset.type} is not a known type of asset`)

@@ -12,7 +12,7 @@ export default (k, p) => {
 	k.setLayers(["background", "objects", "hud"], "objects")
 
 	k.add([
-		k.text(k.getSpecialAsset("demo-text"), { width: k.width(), align: "center" }),
+		k.text(k.getSpecialAsset("demo-text").data, { width: k.width(), align: "center" }),
 		k.anchor("top"),
 		k.stay(),
 		k.pos(k.center().scale(1, 0)),

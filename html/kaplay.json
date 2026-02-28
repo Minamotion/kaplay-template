@@ -28,7 +28,7 @@
 		{
 			"name": "demo-text",
 			"type": "text",
-			"src": "./data/demo-text.txt"
+			"src": "data/demo-text.txt"
 		}
 	]
 }
